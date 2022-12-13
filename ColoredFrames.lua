@@ -22,7 +22,10 @@ frame:RegisterEvent("UNIT_FACTION")
 local function eventHandler(self, event, ...)
     if UnitIsPlayer("target") then
         c = RAID_CLASS_COLORS[select(2, UnitClass("target"))]
-        TargetFrameNameBackground:SetVertexColor(c.r, c.g, c.b)
+        if TargetFrameNameBackground == not nil then
+            TargetFrameNameBackground:SetVertexColor(c.r, c.g, c.b)
+        end
+        
     end
     if UnitIsPlayer("focus") then
         c = RAID_CLASS_COLORS[select(2, UnitClass("focus"))]
@@ -33,7 +36,9 @@ local function eventHandler(self, event, ...)
         bg=PlayerFrame:CreateTexture()
         bg:SetPoint("TOPLEFT",PlayerFrameBackground)
         bg:SetPoint("BOTTOMRIGHT",PlayerFrameBackground,0,22)
-        bg:SetTexture(TargetFrame.TargetFrameContainer.nameBackground:GetTexture())
+        if TargetFrame.TargetFrameContainer.nameBackground == not nil then
+            bg:SetTexture(TargetFrame.TargetFrameContainer.nameBackground:GetTexture())
+        end
         bg:SetVertexColor(c.r,c.g,c.b)
         PlayerFrame.bg=true
     end
