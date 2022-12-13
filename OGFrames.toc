@@ -1,6 +1,6 @@
 ## Interface: 100002
-## Title: Classic Frames
-## Author: Jax
+## Title: OGFrames
+## Author: Smoky And Cerad
 ## Version: v1.0.14
 
 ClassicPlayerFrame.lua
