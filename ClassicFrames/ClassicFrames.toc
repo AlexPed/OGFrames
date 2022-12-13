@@ -8,3 +8,4 @@ ApplyClassicFrame.lua
 ClassicTargetFrame.lua
 ClassicFocusFrame.lua
 ClassicCastingBar.lua
+ColoreFrames.lua
