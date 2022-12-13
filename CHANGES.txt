@@ -1,0 +1,12 @@
+lightweight tag 104f8b439fc6599989087edf68d79dd24dd2280d 1.0.14
+Author:	Kyle Keller <kskeller@live.com>
+Date:	Thu Dec 1 21:51:59 2022 -0500
+
+commit 104f8b439fc6599989087edf68d79dd24dd2280d
+Author: Kyle Keller <kskeller@live.com>
+Date:   Thu Dec 1 21:51:59 2022 -0500
+
+    v1.0.14
+    - BigDebuffs compatability
+    - Castbar Taint Fixed
+
