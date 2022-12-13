@@ -3,9 +3,9 @@
 ## Author: Smoky And Cerad
 ## Version: v1.0.14
 
+ColoredFrames.lua
 ClassicPlayerFrame.lua
 ApplyClassicFrame.lua
 ClassicTargetFrame.lua
 ClassicFocusFrame.lua
 ClassicCastingBar.lua
-ColoreFrames.lua
