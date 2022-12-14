@@ -7,7 +7,7 @@ local function HookOnEventPlayer(self, event, ...)
     if (self.type == "player" or self.type == "target")
     then
         self:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-        if (self.type == "player") then        
+        if (self.type == "player") then
             self.Text:SetPoint("TOPLEFT", 0, 2)
             self.Text:SetPoint("TOPRIGHT", 0, 2)
         end
@@ -17,7 +17,7 @@ local function HookOnEventPlayer(self, event, ...)
         end
     end
     if (self.type == "nameplate") then
-        self.Spark:SetHeight(self:GetHeight()+7)
+        self.Spark:SetHeight(self:GetHeight() + 7)
         self.Icon:ClearAllPoints()
         self.Icon:SetPoint("TOPLEFT", -21, 0)
         self.Icon:SetSize(self:GetHeight(), self:GetHeight())
@@ -27,7 +27,7 @@ local function HookOnEventPlayer(self, event, ...)
         self.newBackground:SetAllPoints(self)
         self.newBackground:SetColorTexture(0, 0, 0, 0.4)
     end
-    if ( self.barType == "interrupted" or event == "UNIT_SPELLCAST_INTERRUPTED") then
+    if (self.barType == "interrupted" or event == "UNIT_SPELLCAST_INTERRUPTED") then
         self:SetStatusBarColor(1, 0, 0, 1);
         self.Spark:Show()
         if (ClearCastOnInterrupt) then
@@ -39,9 +39,9 @@ local function HookOnEventPlayer(self, event, ...)
     else
         self:SetStatusBarColor(1, 0.7, 0, 1);
     end
-    
+
 end
-local function HookOnEventTarget(self, event, ...)    
+local function HookOnEventTarget(self, event, ...)
     if (self == PlayerCastingBarFrame and not PlayerCastingBarFrame.attachedToPlayerFrame) then
         return
     end
@@ -62,7 +62,7 @@ local function HookOnEventTarget(self, event, ...)
     self.BorderShield:SetSize(0, 49)
     self.Text:SetFont("SystemFont_Shadow_Small", 16)
     self.Text:ClearAllPoints()
-    if (self.TextBorder) then        
+    if (self.TextBorder) then
         self.TextBorder:ClearAllPoints()
         self.TextBorder:SetPoint("TOPLEFT", 0, 0)
         self.TextBorder:SetPoint("BOTTOMRIGHT", 0, 0)
@@ -71,7 +71,7 @@ local function HookOnEventTarget(self, event, ...)
 end
 local function HookSetLook(self, look)
     self:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-    if ( look == "CLASSIC" ) then
+    if (look == "CLASSIC") then
         -- self.Flash = false
         self:SetSize(195, 13)
         self.Border:ClearAllPoints()
@@ -88,7 +88,7 @@ local function HookSetLook(self, look)
         self.TextBorder:SetPoint("TOPLEFT", 0, 0)
         self.TextBorder:SetPoint("BOTTOMRIGHT", 0, 0)
         self.playCastFX = false
-    elseif ( look == "UNITFRAME" ) then
+    elseif (look == "UNITFRAME") then
         if (self == PlayerCastingBarFrame and PlayerCastingBarFrame.attachedToPlayerFrame) then
             HookOnEventTarget(PlayerCastingBarFrame)
         end
@@ -122,10 +122,10 @@ hooksecurefunc(CastingBarMixin, "OnEvent", function(self, barType)
 end)
 
 hooksecurefunc("CompactUnitFrame_OnLoad", function(frame, unit)
-    if ( frame.castBar ) then
+    if (frame.castBar) then
         frame.castBar.type = "nameplate";
         frame.castBar.Background:Hide()
-        
+
         frame.castBar:HookScript("OnEvent", HookOnEventPlayer)
     end
 end)
