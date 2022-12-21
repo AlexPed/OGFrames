@@ -29,7 +29,9 @@ local function eventHandler(self, event, ...)
     end
     if UnitIsPlayer("focus") then
         c = RAID_CLASS_COLORS[select(2, UnitClass("focus"))]
+        if FocusFrame.Background == not nil then
         FocusFrame.Background:SetVertexColor(c.r, c.g, c.b)
+        end
     end
 
     if PlayerFrame:IsShown() and not PlayerFrame.bg then

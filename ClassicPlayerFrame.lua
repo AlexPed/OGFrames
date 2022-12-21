@@ -31,9 +31,7 @@ local function updateBarTexture(self, texture)
             self:SetStatusBarAtlas(atlas)
         end
     else
-        if (texture == "Interface\\TargetingFrame\\UI-StatusBar") then
-            return
-        end
+		if (texture == "Interface\\TargetingFrame\\UI-StatusBar") then return end
         self:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     end
 end
@@ -68,7 +66,6 @@ PlayerFrame.PlayerFrameContainer.FrameTexture:ClearAllPoints()
 PlayerFrame.PlayerFrameContainer.FrameTexture:SetPoint("TOPLEFT", PlayerFrame.PlayerFrameContainer, "TOPLEFT", -20, -5)
 PlayerFrame.PlayerFrameContainer.FrameTexture:SetSize(232, 100)
 PlayerFrame.PlayerFrameContainer.FrameTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame")
--- PlayerFrame.PlayerFrameContainer.FrameTexture:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 --<TexCoords left="1.0" right="0.09375" top="0" bottom="0.78125"/>
 PlayerFrame.PlayerFrameContainer.FrameTexture:SetTexCoord(1, 0.09375, 0, 0.78125)
 PlayerFrame.PlayerFrameContainer:SetFrameLevel(4)
@@ -85,15 +82,13 @@ PlayerFrameManaBarTextLeft:SetParent(PlayerFrame.PlayerFrameContainer)
 PlayerFrameHealthBarTextRight:SetParent(PlayerFrame.PlayerFrameContainer)
 PlayerFrameManaBarTextRight:SetParent(PlayerFrame.PlayerFrameContainer)
 
-PlayerFrame.Background = PlayerFrame:CreateTexture(nil, "ARTWORK");
-PlayerFrame.Background:SetPoint("TOPLEFT", PlayerFrame, "TOPLEFT", 86, -26);
-PlayerFrame.Background:SetSize(119, 41)
-
 c = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
-
+PlayerFrame.Background = PlayerFrame:CreateTexture(nil, "BACKGROUND");
+PlayerFrame.Background:SetPoint("TOPLEFT", PlayerFrame, "TOPLEFT", 86, -26);
+PlayerFrame.Background:SetSize(119, 19)
 PlayerFrame.Background:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-LevelBackground")
-PlayerFrame.Background:SetColorTexture(c.r, c.g, c.b, 0.5)
--- PlayerFrame.Background:SetColorTexture(0,0,0, 0.75)
+-- PlayerFrame.Background:SetColorTexture(c.r,c.g,c.b)
+PlayerFrame.Background:SetVertexColor(c.r,c.g,c.b)
 
 
 local attackIconGlow = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual:CreateTexture(nil, "ARTWORK")
@@ -159,14 +154,14 @@ end)
 
 hooksecurefunc("PlayerFrame_UpdateRolesAssigned", function()
     local roleIcon = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.RoleIcon;
-    local role = UnitGroupRolesAssigned("player");
+	local role =  UnitGroupRolesAssigned("player");
     local hasIcon = false;
 
     roleIcon:SetSize(19, 19)
     roleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES")
     roleIcon:ClearAllPoints();
     roleIcon:SetPoint("TOPLEFT", 75, -20)
-    if (role == "TANK" or role == "HEALER" or role == "DAMAGER") then
+	if ( role == "TANK" or role == "HEALER" or role == "DAMAGER") then
         roleIcon:SetTexCoord(GetTexCoordsForRoleSmallCircle(role));
         hasIcon = true
     end
@@ -180,10 +175,12 @@ local function holyPower(self)
     self:ClearAllPoints()
     self:SetPoint("TOPLEFT", 10, 15)
 end
+
 local function alternatePower(self)
     self:ClearAllPoints()
     self:SetPoint("TOPLEFT", 30, 5)
 end
+
 hooksecurefunc("AlternatePowerBar_OnEvent", alternatePower)
 PaladinPowerBarFrame:HookScript("OnEvent", holyPower)
 
@@ -195,7 +192,7 @@ hooksecurefunc("PlayerFrame_UpdateStatus", function()
     restLoop:Hide();
 
     if (restIcon == nil) then
-        PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.RestIcon = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual:CreateTexture(nil, "OVERLAY")
+		PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.RestIcon = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual:CreateTexture(nil, "OVERLAY")
         restIcon = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.RestIcon
     end
 
@@ -215,6 +212,7 @@ hooksecurefunc("PlayerFrame_UpdateStatus", function()
     PlayerFrame.inCombat = UnitAffectingCombat("player")
     if (IsResting()) then
         restIcon:Show()
+
         attackIcon:Hide()
         attackIconGlow:Hide()
         PlayerLevelText:Hide()
@@ -226,6 +224,7 @@ hooksecurefunc("PlayerFrame_UpdateStatus", function()
         restIcon:Hide()
     else
         PlayerLevelText:Show()
+
         attackIcon:Hide()
         attackIconGlow:Hide()
         restIcon:Hide()
@@ -241,12 +240,10 @@ end)
 if (IsAddOnLoaded("BigDebuffs")) then
     hooksecurefunc(BigDebuffs, "UNIT_AURA", function(self, unit)
         local frame = self.UnitFrames[unit]
-        if not frame then
-            return
-        end
+   		 if not frame then return end
         if frame.mask then
             if frame.unit == "player" then
-                frame.mask:SetTexture("Interface/CHARACTERFRAME/TempPortraitAlphaMask", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+				frame.mask:SetTexture("Interface/CHARACTERFRAME/TempPortraitAlphaMask", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
             end
         end
     end)

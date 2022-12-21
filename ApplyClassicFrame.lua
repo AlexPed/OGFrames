@@ -63,7 +63,7 @@ function ApplyClassicFrame(frame)
         FrameManaBar.RightText:SetParent(frame.TargetFrameContainer)
         FrameManaBar.LeftText:SetParent(frame.TargetFrameContainer)
 
-        frame.TargetFrameContent.TargetFrameContentMain.ManaBar.RightText:SetPoint("RIGHT", frame.TargetFrameContent.TargetFrameContentMain.ManaBar, "RIGHT", -4, 0)
+		frame.TargetFrameContent.TargetFrameContentMain.ManaBar.RightText:SetPoint("RIGHT", frame.TargetFrameContent.TargetFrameContentMain.ManaBar, "RIGHT", -4, 0)
     end
 
     local function CreateNameBackground()
@@ -75,11 +75,34 @@ function ApplyClassicFrame(frame)
         frame.nameBackground:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-LevelBackground")
         frame.nameBackground:ClearAllPoints()
         frame.nameBackground:SetPoint("TOPRIGHT", frame.TargetFrameContent.TargetFrameContentMain, "TOPRIGHT", -88, -30)
-        if (not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit)) then
-            frame.nameBackground:SetVertexColor(0.5, 0.5, 0.5);
+		-- if ( not UnitPlayerControlled(frame.unit) ) then
+		if (UnitIsPlayer(frame.unit)) then
+			if (UnitIsPlayer("focus")) then
+				local c=RAID_CLASS_COLORS[select(2, UnitClass("focus"))]
+				FocusFrame.nameBackground:SetVertexColor(c.r,c.g,c.b)
+			end
+			if (UnitIsPlayer("target")) then
+				local c=RAID_CLASS_COLORS[select(2, UnitClass("target"))]
+				TargetFrame.nameBackground:SetVertexColor(c.r,c.g,c.b)
+			end
         else
-            local c = RAID_CLASS_COLORS[select(2, UnitClass("target"))]
-            frame.nameBackground:SetVertexColor(c.r, c.g, c.b)
+			local colors
+
+       		local red, green, _ = UnitSelectionColor(frame.unit)
+
+			if (red == 0) then
+				colors = {0, 1, 0, 0.99999779462814} -- friendly
+			elseif (green == 0) then
+				colors = {1, 0, 0, 0.99999779462814}
+			else
+				colors = {1, 1, 0, 0.99999779462814} -- yellow
+			end
+
+        -- 
+			frame.nameBackground:SetVertexColor(colors[1], colors[2], colors[3]);
+			-- frame.statusbar:SetStatusBarColor(colors[1], colors[2], colors[3])
+		-- else
+		-- 	
         end
     end
 
@@ -100,7 +123,21 @@ function ApplyClassicFrame(frame)
         frame.TargetFrameContainer.ClassicTexture:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame")
         --<TexCoords left="0.09375" right="1.0" top="0" bottom="0.78125"/>
         frame.TargetFrameContainer.ClassicTexture:SetTexCoord(0.09375, 1, 0, 0.78125)
-        frame.TargetFrameContainer.ClassicTexture:SetVertexColor(frame.TargetFrameContainer.FrameTexture:GetVertexColor())
+		if (not UnitIsPlayer(frame.unit)) then
+			local colors
+
+       		local red, green, _ = UnitSelectionColor(frame.unit)
+
+			if (red == 0) then
+				colors = {0, 1, 0, 0.99999779462814} -- friendly
+			elseif (green == 0) then
+				colors = {1, 0, 0, 0.99999779462814}
+			else
+				colors = {1, 1, 0, 0.99999779462814} -- yellow
+			end
+			frame.TargetFrameContent.TargetFrameContentMain.HealthBar:SetStatusBarColor(colors[1], colors[2], colors[3]);
+		end
+		-- frame.TargetFrameContainer.ClassicTexture:SetVertexColor(frame.TargetFrameContainer.FrameTexture:GetVertexColor())
         frame.TargetFrameContent.TargetFrameContentMain.ReputationColor:Hide()
         frame.TargetFrameContainer.Portrait:SetSize(64, 64)
         frame.TargetFrameContainer.Portrait:ClearAllPoints()
@@ -113,17 +150,17 @@ function ApplyClassicFrame(frame)
     local function fixDebuffs()
         local frameName = frame.totFrame:GetName();
         local suffix = "Debuff";
-        local frameNameWithSuffix = frameName .. suffix;
-        for i = 1, 4 do
-            local debuffName = frameNameWithSuffix .. i;
+		local frameNameWithSuffix = frameName..suffix;
+		for i=1,4 do
+			local debuffName = frameNameWithSuffix..i;
             _G[debuffName]:ClearAllPoints()
             if (i == 1) then
                 _G[debuffName]:SetPoint("TOPLEFT", frame.totFrame, "TOPRIGHT", -23, -8)
-            elseif (i == 2) then
+			elseif (i==2) then
                 _G[debuffName]:SetPoint("TOPLEFT", frame.totFrame, "TOPRIGHT", -10, -8)
-            elseif (i == 3) then
+			elseif (i==3) then
                 _G[debuffName]:SetPoint("TOPLEFT", frame.totFrame, "TOPRIGHT", -23, -21)
-            elseif (i == 4) then
+			elseif (i==4) then
                 _G[debuffName]:SetPoint("TOPLEFT", frame.totFrame, "TOPRIGHT", -10, -21)
             end
         end
@@ -201,13 +238,14 @@ function ApplyClassicFrame(frame)
         PositionTargetBars()
     end)
 
+
     if (frame.totFrame) then
         frame.totFrame:RegisterEvent("UNIT_AURA")
         frame.totFrame:HookScript("OnEvent", function(s, e, ...)
             local arg1 = ...;
             if ((not (arg1 == "")) and (not (arg1 == nil)) and
-                    (not (s.unit == "")) and (not (s.unit == nil)) and
-                    UnitIsUnit(arg1, s.unit)) then
+                (not (s.unit == "")) and (not (s.unit == nil)) and
+                UnitIsUnit(arg1, s.unit)) then
                 RefreshDebuffs(s, s.unit, nil, nil, true)
             end
         end)

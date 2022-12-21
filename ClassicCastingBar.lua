@@ -41,6 +41,7 @@ local function HookOnEventPlayer(self, event, ...)
     end
 
 end
+
 local function HookOnEventTarget(self, event, ...)
     if (self == PlayerCastingBarFrame and not PlayerCastingBarFrame.attachedToPlayerFrame) then
         return
@@ -69,6 +70,7 @@ local function HookOnEventTarget(self, event, ...)
     end
     HookOnEventPlayer(self, event, ...)
 end
+
 local function HookSetLook(self, look)
     self:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     if (look == "CLASSIC") then
