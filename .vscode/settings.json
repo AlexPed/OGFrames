@@ -1,0 +1,13 @@
+{
+    "Lua.diagnostics.globals": [
+        "PlayerFrame",
+        "TargetFrame",
+        "CUSTOM_CLASS_COLORS",
+        "FocusFrame",
+        "PlayerFrameBackground",
+        "TargetFrameNameBackground",
+        "FocusFrameNameBackground",
+        "ComboPointPlayerFrame",
+        "PlayerName"
+    ]
+}
