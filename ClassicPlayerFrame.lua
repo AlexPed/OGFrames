@@ -35,6 +35,7 @@ local function updateBarTexture(self, texture)
         self:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
     end
 end
+
 local function updateManaBarColor(self, r, g, b, a)
     local color = {};
     color.r = 1;
@@ -90,7 +91,6 @@ PlayerFrame.Background:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-
 -- PlayerFrame.Background:SetColorTexture(c.r,c.g,c.b)
 PlayerFrame.Background:SetVertexColor(c.r,c.g,c.b)
 
-
 local attackIconGlow = PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual:CreateTexture(nil, "ARTWORK")
 PlayerFrame.PlayerFrameContent.PlayerFrameContentContextual.AttackIconGlow = attackIconGlow;
 attackIconGlow:SetTexture("Interface\\CharacterFrame\\UI-StateIcon");
@@ -99,6 +99,12 @@ attackIconGlow:SetBlendMode("ADD")
 attackIconGlow:SetSize(32, 32)
 attackIconGlow:ClearAllPoints();
 attackIconGlow:SetPoint("TOPLEFT", PlayerLevelText, "TOPLEFT", -9, 12)
+
+local function logMessageToChat(message)
+    if DEFAULT_CHAT_FRAME then
+        DEFAULT_CHAT_FRAME:AddMessage(message)
+    end
+end
 
 local function RunOncePlayer()
     if (not ranOnce) then
@@ -112,9 +118,11 @@ local function RunOncePlayer()
         PermaHide(PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarArea.PlayerFrameHealthBarAnimatedLoss)
         PermaHide(PlayerFrameManaBar.FeedbackFrame)
         PermaHide(PlayerFrame.threatIndicator)
+        
         if (GetCVar("comboPointLocation") == "1") then
-            PermaHide(ComboPointPlayerFrame)
+            PermaHide(RogueComboPointBarFrame)
         end
+        
     end
 end
 
@@ -241,9 +249,10 @@ if (IsAddOnLoaded("BigDebuffs")) then
     hooksecurefunc(BigDebuffs, "UNIT_AURA", function(self, unit)
         local frame = self.UnitFrames[unit]
    		 if not frame then return end
-        if frame.mask then
+         if frame.mask then
             if frame.unit == "player" then
 				frame.mask:SetTexture("Interface/CHARACTERFRAME/TempPortraitAlphaMask", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+                frame:SetFrameLevel(4)
             end
         end
     end)
